@@ -31,14 +31,13 @@ $ismoProp = @{
 Write-Host "Installing InvokeBuild"
 Install-Module "InvokeBuild" @ismoProp
 
-$error.Clear()
+try {
 
 Write-Host "Installing Configuration"
 Install-Module "Configuration" @ismoProp -RequiredVersion "0.2"
-
-if ($error) {
-    $error | Format-List * -Force
-    $error | % { $_.Exception } | Format-List * -Force
+} catch {
+    $_ | Format-List * -Force | Out-String
+    $_.Exception | Format-List * -Force | Out-String
 }
 
 $buildHelpersConditions = @{}
