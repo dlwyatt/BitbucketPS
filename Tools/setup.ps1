@@ -31,8 +31,15 @@ $ismoProp = @{
 Write-Host "Installing InvokeBuild"
 Install-Module "InvokeBuild" @ismoProp
 
+$error.Clear()
+
 Write-Host "Installing Configuration"
 Install-Module "Configuration" @ismoProp -RequiredVersion "0.2"
+
+if ($error) {
+    $error | Format-List * -Force
+    $error | % { $_.Exception } | Format-List * -Force
+}
 
 $buildHelpersConditions = @{}
 if ($PSVersionTable.PSVersion.Major -ge 5) {
